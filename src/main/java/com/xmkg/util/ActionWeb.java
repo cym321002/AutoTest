@@ -1,15 +1,23 @@
 package com.xmkg.util;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -21,6 +29,8 @@ import org.testng.annotations.Test;
 
 public class ActionWeb {
 	// 成员变量webdrvier对象driver，用这个成员变量操作后续的所有方法。
+	
+	public Logger logger = Logger.getLogger(this.getClass());
 	public WebDriver driver = null;
 
 	public ActionWeb() {
@@ -324,7 +334,27 @@ public class ActionWeb {
 			e.printStackTrace();
 		}
 	}
-
+	
+	// 报错时截图
+	public void saveScrShot(String method) {
+		// 获取当前的执行时间
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd+HH-mm-ss");
+		// 当前时间的字符串
+		String createdate = sdf.format(date);
+		// 拼接文件名，形式为：工作目录路径+方法名+执行时间.png
+		String scrName = "AutoTest/test-output/SCRshot" + method + createdate + ".png";
+		// 以当前文件名创建文件
+		File scrShot = new File(scrName);
+		// 将截图保存到临时文件
+		File tmp = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		try {
+			FileUtils.copyFile(tmp, scrShot);
+		} catch (IOException e) {
+			logger.error(e, e.fillInStackTrace());
+			logger.error("截图失败！");
+		}
+	}
 	
 
 }
