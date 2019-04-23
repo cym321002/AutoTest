@@ -7,7 +7,7 @@
         <methods>
           <include name="open"/>
           <include name="close"/>
-          <include name="test" invocation-numbers="0 1 2"/>
+          <include name="test" invocation-numbers="2"/>
         </methods>
       </class> <!-- com.xmkg.web.TestLoginPage -->
     </classes>

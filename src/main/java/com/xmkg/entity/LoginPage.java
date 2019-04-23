@@ -28,26 +28,26 @@ public class LoginPage extends ActionWeb {
 	}
 
 	// 封装关键字实现登录
-	public String login() {
+	public String login(String un,String pw) {
 		load();
 		halt("3");
 		PageFactory.initElements(driver, this);
-		input(userName, "admin");
-		input(passWord, "123456");
+		input(userName, un);
+		input(passWord, pw);
 		click(LandingButton);
-		return assertPageContains("系统首页");
+		halt("3");
+		return assertTitleIs("席媒无纸化会议管理系统");
 	}
 
 	@Override
-	public String assertPageContains(String target) {
+	public String assertTitleIs(String target) {
 
-		String pageContent = driver.getPageSource();
 		switch (count) {
 		case 1:
 			
 			logger.debug("开始执行第一组测试数据。。。。。。。。。。");
 			count++;
-			return super.assertTitleContains("无纸化会议后台管理系统");
+			return super.assertTitleIs("席媒无纸化会议管理系统");
             
 		case 2:
 			logger.debug("开始执行第二组测试数据。。。。。。。。。。");
@@ -66,8 +66,6 @@ public class LoginPage extends ActionWeb {
 			return "fail";
 
 		}
-
-		// return "Pass";
 
 	}
 

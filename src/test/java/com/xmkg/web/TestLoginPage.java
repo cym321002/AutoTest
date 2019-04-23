@@ -9,7 +9,12 @@ import org.testng.annotations.Test;
 
 import com.xmkg.entity.LoginPage;
 
-//extends AbstractTestNGSpringContextTests
+/**
+ * 用例编号：
+ * 作者：cym
+ * 日期：2019年4月3日
+ * 描述：完成了登陆模块测试
+ */
 public class TestLoginPage {
 
 	LoginPage loginPage = new LoginPage();
@@ -31,7 +36,7 @@ public class TestLoginPage {
 
 	@Test(enabled = true,dataProvider="testData")
 	public void test(String userName,String passWord) {
-		assertEquals(loginPage.login().toString(), "pass");
+		assertEquals(loginPage.login(userName,passWord).toString(), "pass");
 
 	}
 }
