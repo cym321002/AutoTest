@@ -32,8 +32,7 @@ public class ActionWeb {
 	
 	public Logger logger = Logger.getLogger(this.getClass());
 	public WebDriver driver = null;
-
-	public ActionWeb() {
+    public ActionWeb() {
 
 	}
 
@@ -46,20 +45,24 @@ public class ActionWeb {
 		try {
 			switch (browserType) {
 			case "chrome":
-				GoogleDriver gg = new GoogleDriver("E:\\eclipse-workspace\\AutoTest\\src\\main\\resources\\tools\\chromedriver.exe");
+				GoogleDriver gg = new GoogleDriver("src/main/resources/tools/chromedriver.exe");
 				driver = gg.getdriver();
+				implicitlyWait();	
 				break;
 			case "FF":
 				FFDriver ff = new FFDriver("E:\\Program Files\\Mozilla Firefox\\firefox.exe", "tools/geckodriver.exe");
 				driver = ff.getdriver();
+				implicitlyWait();
 				break;
 			case "IE":
 				IEDriver IE = new IEDriver("tools/IEDriver.exe");
 				driver = IE.getdriver();
+				implicitlyWait();
 				break;
 			default:
-				GoogleDriver google = new GoogleDriver("E:\\eclipse-workspace\\AutoTest\\src\\main\\resources\\tools\\chromedriver.exe");
+				GoogleDriver google = new GoogleDriver("src/main/resources/tools/chromedriver.exe");
 				driver = google.getdriver();
+				implicitlyWait();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -93,7 +96,7 @@ public class ActionWeb {
 			driver.quit();
 		}
 	}
-
+	/*************************************************************************************************/
 	/**
 	 * 定位输入框并输入内容方法
 	 * 
@@ -111,7 +114,27 @@ public class ActionWeb {
 			driver.quit();
 		}
 	}
-
+	/**
+	 * 定位输入框并输入内容方法
+	 * 重载方法
+	 * @param 定位的表达式以及输入的字符串
+	 */
+	
+	public void input(WebElement element, String content) {
+		try {
+			//explicitlyWait(xpath);
+			//WebElement element = driver.findElement(By.xpath(xpath));
+			element.clear();
+			element.sendKeys(content);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			driver.quit();
+		}
+	}
+	
+	
+	/*************************************************************************************************/
 	public void click(String xpath) {
 		try {
 			explicitlyWait(xpath);
@@ -123,6 +146,20 @@ public class ActionWeb {
 			driver.quit();
 		}
 	}
+	
+	
+	public void click(WebElement element) {
+		try {
+			//explicitlyWait(xpath);
+			element.click();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			driver.quit();
+		}
+	}
+
+	/*************************************************************************************************/
 
 	/**
 	 * 使用actions类，调用moveElement方法实现悬停。
@@ -157,6 +194,7 @@ public class ActionWeb {
 		String title = "";
 		try {
 			title = driver.getTitle();
+			System.out.println ("@@@@@@@@@@@@@@@@@@切换到的页面标题为:" + title );
 			return title;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -174,7 +212,11 @@ public class ActionWeb {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * 隐式等待时间，全局有效
+	 * 
+	 * @param 等待10秒时间
+	 */
 	public void implicitlyWait() {
 		try {
 			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -353,6 +395,113 @@ public class ActionWeb {
 		} catch (IOException e) {
 			logger.error(e, e.fillInStackTrace());
 			logger.error("截图失败！");
+		}
+	}
+	/**
+	 * 断言标题中包含指定内容
+	 * 
+	 * @param target 标题包含的内容
+	 */
+	public String assertTitleContains(String target) {
+		String result = getTitle();
+		if (result.contains(target)) {
+			logger.info("测试成功！");
+			//webExcel.writeCell(line, 10, "PASS");
+			return "pass";
+		} else {
+			logger.info("测试失败！");
+			//webExcel.writeFailCell(line, 10, "FAIL");
+			return "fail";
+		}
+	}
+
+	/**
+	 * 断言标题的内容符合预期
+	 * 
+	 * @param target 标题内容
+	 */
+	public String assertTitleIs(String target) {
+		String result = getTitle();
+		if (result.equals(target)) {
+			logger.info("测试成功！");
+			//webExcel.writeFailCell(line, 10, "PASS");
+			return "pass";
+		} else {
+			logger.info("测试失败！");
+			//webExcel.writeFailCell(line, 10, "FAIL");
+			return "fail";
+		}
+	}
+
+	/**
+	 * 断言页面中某个元素的文本内容是否符合预期
+	 * 
+	 * @param xpath  元素定位xpath表达式
+	 * @param target 预期的内容
+	 */
+	public String assertContentIs(String xpath, String target) {
+		try {
+			WebElement ele = driver.findElement(By.xpath(xpath));
+			String text = ele.getText();
+			System.out.println("@@@@@@@@@@@获取到内容为：" + text);
+			if (text.equals(target)) {
+				logger.info("测试成功！");
+				//webExcel.writeCell(line, 10, "PASS");
+				return "pass";
+			} else {
+				logger.info("测试失败！");
+				//webExcel.writeFailCell(line, 10, "FAIL");
+				return "fail";
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.info("未找到指定元素！");
+			return "fail";
+		}
+	}
+
+	/**
+	 * 断言元素的某个值是否符合预期
+	 * 
+	 * @param xpath  元素定位xpath表达式
+	 * @param attr   元素中的属性
+	 * @param target 属性值
+	 */
+	public String assertAttrIs(String xpath, String attr, String target) {
+		try {
+			WebElement ele = driver.findElement(By.xpath(xpath));
+			String value = ele.getAttribute(attr);
+			if (value.equals(target)) {
+				logger.info("测试成功！");
+				//webExcel.writeCell(line, 10, "PASS");
+				return "pass";
+			} else {
+				logger.info("测试失败！");
+				//webExcel.writeFailCell(line, 10, "FAIL");
+				return "fail";
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.info("未找到指定元素的指定属性！");
+			return "fail";
+		}
+	}
+
+	/**
+	 * 断言页面源码中包含某个内容
+	 * 
+	 * @param target 页面中预期包含的内容
+	 */
+	public String assertPageContains(String target) {
+		String pageContent = driver.getPageSource();
+		if (pageContent.contains(target)) {
+			logger.info("测试成功！");
+			//webExcel.writeCell(line, 10, "PASS");
+			return "pass";
+		} else {
+			logger.info("测试失败！");
+			//webExcel.writeFailCell(line, 10, "FAIL");
+			return "fail";
 		}
 	}
 	

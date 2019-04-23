@@ -1,44 +1,74 @@
 package com.xmkg.entity;
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.Test;
 
 import com.xmkg.util.ActionWeb;
 
-public class LoginPage extends ActionWeb{
-	
-	public String url = "http://www.taobao.com";
-	//@FindBy(xpath = "")
-	//public WebElement user;
-	
-	
-	//构造函数初始化成员对象
-	public LoginPage() {
-		PageFactory.initElements(driver, this);
-	}
-	
+public class LoginPage extends ActionWeb {
+
+	// 判斷方法被調用了幾次
+	public static int count = 1;
+
+	public String url = "http://192.168.90.3:8073/index.html#/login";
+	@FindBy(xpath = "//*[@id='main']/div/div[1]/div/div[2]/div[1]/div[1]/form/div[1]/div/div/input")
+	public WebElement userName;
+
+	@FindBy(xpath = "//*[@id='main']/div/div[1]/div/div[2]/div[1]/div[1]/form/div[2]/div/div/input")
+	public WebElement passWord;
+
+	@FindBy(xpath = "//*[@id=\"main\"]/div/div[1]/div/div[2]/div[1]/div[1]/form/div[4]/div/button")
+	public WebElement LandingButton;
+
 	public void load() {
-	  visitWeb(url);
+		visitWeb(url);
 	}
-	
-	//封装关键字实现登录
-	public void login() {
-		
-		logger.debug("开始打开浏览器。。。。。。。。。");
-		openBrowser("chrome");
+
+	// 封装关键字实现登录
+	public String login() {
 		load();
-		this.halt("3");
-		
-//		user.click();
-//		click("//a[@class='red']");
-//		input("//input[@id='username']", "2798145476@qq.com");
-//		input("//input[@id='password']", "qinghong");
-//		input("//input[@placeholder='验证码']", "1");
-//		click("//a[@name='sbtbutton']");
-		//关闭浏览器，关闭driver
-		driver.quit();
-		System.out.print(logger.getClass());
-		logger.debug("开始关闭浏览器。。。。。。。。。。");
+		halt("3");
+		PageFactory.initElements(driver, this);
+		input(userName, "admin");
+		input(passWord, "123456");
+		click(LandingButton);
+		return assertPageContains("系统首页");
 	}
+
+	@Override
+	public String assertPageContains(String target) {
+
+		String pageContent = driver.getPageSource();
+		switch (count) {
+		case 1:
+			
+			logger.debug("开始执行第一组测试数据。。。。。。。。。。");
+			count++;
+			return super.assertTitleContains("无纸化会议后台管理系统");
+            
+		case 2:
+			logger.debug("开始执行第二组测试数据。。。。。。。。。。");
+			count++;
+			String xpathA = "//*[@id=\"main\"]/div/div[1]/div/div[2]/div[1]/div[1]/form/div[1]/div/p";
+			return super.assertContentIs(xpathA, "用户名或密码错误");
+
+		case 3:
+			logger.debug("开始执行第三组测试数据。。。。。。。。。。");
+			count++;
+			String xpathB = "//*[@id=\"main\"]/div/div[1]/div/div[2]/div[1]/div[1]/form/div[1]/div/p";
+			return super.assertContentIs(xpathB, "账号不存在");
+
+		default:
+			logger.debug("请检查测试数据项的个数，是否和case条件数目是否匹配");
+			return "fail";
+
+		}
+
+		// return "Pass";
+
+	}
+
 }
