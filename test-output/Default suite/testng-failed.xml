@@ -5,9 +5,14 @@
     <classes>
       <class name="com.xmkg.web.TestLoginPage">
         <methods>
+          <include name="springTestContextBeforeTestClass"/>
           <include name="open"/>
           <include name="close"/>
-          <include name="test" invocation-numbers="0 1 2"/>
+          <include name="springTestContextPrepareTestInstance"/>
+          <include name="springTestContextAfterTestClass"/>
+          <include name="springTestContextBeforeTestMethod"/>
+          <include name="test" invocation-numbers="2"/>
+          <include name="springTestContextAfterTestMethod"/>
         </methods>
       </class> <!-- com.xmkg.web.TestLoginPage -->
     </classes>

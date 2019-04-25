@@ -22,19 +22,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 public class ActionWeb {
 	// 成员变量webdrvier对象driver，用这个成员变量操作后续的所有方法。
-	
-	public Logger logger = Logger.getLogger(this.getClass());
 	public WebDriver driver = null;
-    public ActionWeb() {
-
-	}
+	public Logger logger = Logger.getLogger(this.getClass());
+	
 
 	/**
 	 * 启动浏览器的方法
@@ -70,7 +66,7 @@ public class ActionWeb {
 		}
 
 	}
-
+	
 	/**
 	 * 调整浏览器窗口大小
 	 */
@@ -194,7 +190,7 @@ public class ActionWeb {
 		String title = "";
 		try {
 			title = driver.getTitle();
-			System.out.println ("@@@@@@@@@@@@@@@@@@切换到的页面标题为:" + title );
+			System.out.println ("~~~~~~切换到的页面的title值为~~~~~~:" + title );
 			return title;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -443,7 +439,7 @@ public class ActionWeb {
 		try {
 			WebElement ele = driver.findElement(By.xpath(xpath));
 			String text = ele.getText();
-			System.out.println("@@@@@@@@@@@获取到内容为：" + text);
+			System.out.println("~~~~获取到的实际元素文本内容为~~~~~：" + text);
 			if (text.equals(target)) {
 				logger.info("测试成功！");
 				//webExcel.writeCell(line, 10, "PASS");
@@ -455,7 +451,7 @@ public class ActionWeb {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			logger.info("未找到指定元素！");
+			//logger.info("未找到指定元素！");
 			return "fail";
 		}
 	}

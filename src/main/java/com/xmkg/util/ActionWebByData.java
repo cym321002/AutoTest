@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
@@ -28,7 +29,7 @@ import com.xmkg.util.*;
 public class ActionWebByData {
 	// 成员变量webdrvier对象driver，用这个成员变量操作后续的所有方法。
 	public WebDriver driver = null;
-
+	public Logger logger = Logger.getLogger(this.getClass());
 	// 声明写excel对象。
 	public ExcelWriter webExcel = null;
 	// 当前行数的成员变量
@@ -49,7 +50,7 @@ public class ActionWebByData {
 			case "chrome":
 				GoogleDriver gg = new GoogleDriver("AutoTest/src/main/resources/tools/chromedriver.exe");
 				driver = gg.getdriver();
-				AutoLogger.log.info("chrome浏览器启动");
+				logger.info("chrome浏览器启动");
 				break;
 			case "FF":
 				FFDriver ff = new FFDriver("E:\\Program Files\\Mozilla Firefox\\firefox.exe", "tools/geckodriver.exe");
@@ -67,7 +68,7 @@ public class ActionWebByData {
 			return "pass";
 		} catch (Exception e) {
 			webExcel.writeFailCell(line, 10, "FAIL");
-			AutoLogger.log.error(e, e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			return "fail";
 		}
 
@@ -82,7 +83,7 @@ public class ActionWebByData {
 			Dimension d = new Dimension(1400, 1000);
 			driver.manage().window().setPosition(p);
 			driver.manage().window().setSize(d);
-			AutoLogger.log.info("调整浏览器窗口大小为1400*1000");
+			logger.info("调整浏览器窗口大小为1400*1000");
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
@@ -99,12 +100,12 @@ public class ActionWebByData {
 	public String visitWeb(String URL) {
 		try {
 			driver.get(URL);
-			AutoLogger.log.info("访问" + URL);
+			logger.info("访问" + URL);
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
 			webExcel.writeFailCell(line, 10, "FAIL");
-			AutoLogger.log.error(e, e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			return "fail";
 		}
 	}
@@ -123,7 +124,7 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			saveScrShot("input");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
@@ -138,7 +139,7 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			saveScrShot("click");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
@@ -155,12 +156,12 @@ public class ActionWebByData {
 			WebElement element = driver.findElement(By.xpath(xpath));
 			Actions act = new Actions(driver);
 			act.moveToElement(element).build().perform();
-			AutoLogger.log.info("悬停到指定元素");
+			logger.info("悬停到指定元素");
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.info("元素悬停失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.info("元素悬停失败！");
 			saveScrShot("hover");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
@@ -180,7 +181,7 @@ public class ActionWebByData {
 				}
 			});
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 		}
 	}
 
@@ -193,8 +194,8 @@ public class ActionWebByData {
 			title = driver.getTitle();
 			return title;
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.info("获取页面标题失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.info("获取页面标题失败！");
 			return null;
 		}
 
@@ -211,7 +212,7 @@ public class ActionWebByData {
 			return "pass";
 		} catch (Exception e) {
 			webExcel.writeFailCell(line, 10, "FAIL");
-			AutoLogger.log.error(e, e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			return "fail";
 		}
 	}
@@ -225,7 +226,7 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}
@@ -243,7 +244,7 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (InterruptedException e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
+			logger.error(e, e.fillInStackTrace());
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}
@@ -255,13 +256,13 @@ public class ActionWebByData {
 			explicitlyWait(xpath);
 			WebElement frame = driver.findElement(By.xpath(xpath));
 			driver.switchTo().frame(frame);
-			AutoLogger.log.info("进入iframe成功！");
+			logger.info("进入iframe成功！");
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.info("进入iframe失败");
+			logger.error(e, e.fillInStackTrace());
+			logger.info("进入iframe失败");
 			saveScrShot("切入Iframe");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
@@ -276,8 +277,8 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.error("切出Iframe失败");
+			logger.error(e, e.fillInStackTrace());
+			logger.error("切出Iframe失败");
 			saveScrShot("切出Iframe");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
@@ -304,8 +305,8 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.info("通过页面标题切换窗口失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.info("通过页面标题切换窗口失败！");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}
@@ -329,8 +330,8 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.info("关闭旧窗口切换到新窗口失败");
+			logger.error(e, e.fillInStackTrace());
+			logger.info("关闭旧窗口切换到新窗口失败");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}
@@ -351,8 +352,8 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.error("关闭新窗口失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.error("关闭新窗口失败！");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}
@@ -366,8 +367,8 @@ public class ActionWebByData {
 			t = js.executeScript("return " + text).toString();
 			webExcel.writeCell(line, 10, "PASS");
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.error("JS脚本执行失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.error("JS脚本执行失败！");
 			webExcel.writeFailCell(line, 10, "FAIL");
 		}
 		return t;
@@ -381,8 +382,8 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.error("JS脚本执行失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.error("JS脚本执行失败！");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}
@@ -397,8 +398,8 @@ public class ActionWebByData {
 			webExcel.writeFailCell(line, 10, "PASS");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.error("操作浏览器滚动条失败");
+			logger.error(e, e.fillInStackTrace());
+			logger.error("操作浏览器滚动条失败");
 			saveScrShot("scroll");
 			webExcel.writeFailCell(line, 10, "FAIL");
 		}
@@ -413,8 +414,8 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.error("通过文本选择Select失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.error("通过文本选择Select失败！");
 			saveScrShot("Select");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
@@ -430,8 +431,8 @@ public class ActionWebByData {
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} catch (Exception e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.error("通过值选择Select失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.error("通过值选择Select失败！");
 			saveScrShot("Select");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
@@ -471,8 +472,8 @@ public class ActionWebByData {
 		try {
 			FileUtils.copyFile(tmp, scrShot);
 		} catch (IOException e) {
-			AutoLogger.log.error(e, e.fillInStackTrace());
-			AutoLogger.log.error("截图失败！");
+			logger.error(e, e.fillInStackTrace());
+			logger.error("截图失败！");
 		}
 	}
 
@@ -484,11 +485,11 @@ public class ActionWebByData {
 	public String assertTitleContains(String target) {
 		String result = getTitle();
 		if (result.contains(target)) {
-			AutoLogger.log.info("测试成功！");
+			logger.info("测试成功！");
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} else {
-			AutoLogger.log.info("测试失败！");
+			logger.info("测试失败！");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}
@@ -502,11 +503,11 @@ public class ActionWebByData {
 	public String assertTitleIs(String target) {
 		String result = getTitle();
 		if (result.equals(target)) {
-			AutoLogger.log.info("测试成功！");
+			logger.info("测试成功！");
 			webExcel.writeFailCell(line, 10, "PASS");
 			return "pass";
 		} else {
-			AutoLogger.log.info("测试失败！");
+			logger.info("测试失败！");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}
@@ -523,17 +524,17 @@ public class ActionWebByData {
 			WebElement ele = driver.findElement(By.xpath(xpath));
 			String text = ele.getText();
 			if (text.equals(target)) {
-				AutoLogger.log.info("测试成功！");
+				logger.info("测试成功！");
 				webExcel.writeCell(line, 10, "PASS");
 				return "pass";
 			} else {
-				AutoLogger.log.info("测试失败！");
+				logger.info("测试失败！");
 				webExcel.writeFailCell(line, 10, "FAIL");
 				return "fail";
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			AutoLogger.log.info("未找到指定元素！");
+			logger.info("未找到指定元素！");
 			return "fail";
 		}
 	}
@@ -550,17 +551,17 @@ public class ActionWebByData {
 			WebElement ele = driver.findElement(By.xpath(xpath));
 			String value = ele.getAttribute(attr);
 			if (value.equals(target)) {
-				AutoLogger.log.info("测试成功！");
+				logger.info("测试成功！");
 				webExcel.writeCell(line, 10, "PASS");
 				return "pass";
 			} else {
-				AutoLogger.log.info("测试失败！");
+				logger.info("测试失败！");
 				webExcel.writeFailCell(line, 10, "FAIL");
 				return "fail";
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			AutoLogger.log.info("未找到指定元素的指定属性！");
+			logger.info("未找到指定元素的指定属性！");
 			return "fail";
 		}
 	}
@@ -573,11 +574,11 @@ public class ActionWebByData {
 	public String assertPageContains(String target) {
 		String pageContent = driver.getPageSource();
 		if (pageContent.contains(target)) {
-			AutoLogger.log.info("测试成功！");
+			logger.info("测试成功！");
 			webExcel.writeCell(line, 10, "PASS");
 			return "pass";
 		} else {
-			AutoLogger.log.info("测试失败！");
+			logger.info("测试失败！");
 			webExcel.writeFailCell(line, 10, "FAIL");
 			return "fail";
 		}

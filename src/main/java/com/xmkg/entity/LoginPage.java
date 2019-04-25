@@ -1,31 +1,40 @@
 package com.xmkg.entity;
 
-import org.openqa.selenium.JavascriptExecutor;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.Test;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import com.xmkg.util.ActionWeb;
 
+
+
+
+
+@Component
 public class LoginPage extends ActionWeb {
+
 
 	// 判斷方法被調用了幾次
 	public static int count = 1;
+	@Value("${irs.ol}")
+	public String url;
 
-	public String url = "http://192.168.90.3:8073/index.html#/login";
+	//public String url = "http://192.168.90.3:8073/index.html#/login";
 	@FindBy(xpath = "//*[@id='main']/div/div[1]/div/div[2]/div[1]/div[1]/form/div[1]/div/div/input")
-	public WebElement userName;
+	WebElement userName;
 
 	@FindBy(xpath = "//*[@id='main']/div/div[1]/div/div[2]/div[1]/div[1]/form/div[2]/div/div/input")
-	public WebElement passWord;
+	WebElement passWord;
 
 	@FindBy(xpath = "//*[@id=\"main\"]/div/div[1]/div/div[2]/div[1]/div[1]/form/div[4]/div/button")
-	public WebElement LandingButton;
+	WebElement LandingButton;
 
 	public void load() {
 		visitWeb(url);
 	}
+    
 
 	// 封装关键字实现登录
 	public String login(String un,String pw) {
@@ -44,7 +53,6 @@ public class LoginPage extends ActionWeb {
 
 		switch (count) {
 		case 1:
-			
 			logger.debug("开始执行第一组测试数据。。。。。。。。。。");
 			count++;
 			return super.assertTitleIs("席媒无纸化会议管理系统");
