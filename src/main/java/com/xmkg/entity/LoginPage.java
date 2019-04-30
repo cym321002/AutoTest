@@ -8,10 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.xmkg.util.ActionWeb;
 
-
-
-
-
 @Component
 public class LoginPage extends ActionWeb {
 
@@ -20,7 +16,6 @@ public class LoginPage extends ActionWeb {
 	public static int count = 1;
 	@Value("${irs.ol}")
 	public String url;
-
 	//public String url = "http://192.168.90.3:8073/index.html#/login";
 	@FindBy(xpath = "//*[@id='main']/div/div[1]/div/div[2]/div[1]/div[1]/form/div[1]/div/div/input")
 	WebElement userName;
@@ -31,14 +26,10 @@ public class LoginPage extends ActionWeb {
 	@FindBy(xpath = "//*[@id=\"main\"]/div/div[1]/div/div[2]/div[1]/div[1]/form/div[4]/div/button")
 	WebElement LandingButton;
 
-	public void load() {
-		visitWeb(url);
-	}
-    
 
 	// 封装关键字实现登录
 	public String login(String un,String pw) {
-		load();
+		visitWeb(url);
 		halt("3");
 		PageFactory.initElements(driver, this);
 		input(userName, un);

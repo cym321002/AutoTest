@@ -30,6 +30,7 @@ public class TestLoginPage extends AbstractTestNGSpringContextTests{
 	@BeforeMethod
 	public void open() {
 		loginPage.openBrowser("chrome");
+		loginPage.setWindow();
 	}
 
 	@AfterMethod

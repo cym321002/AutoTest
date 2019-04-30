@@ -71,8 +71,8 @@ public class ActionWeb {
 	 * 调整浏览器窗口大小
 	 */
 	public void setWindow() {
-		Point p = new Point(320, 0);
-		Dimension d = new Dimension(1400, 1000);
+		Point p = new Point(0, 0);
+		Dimension d = new Dimension(1800, 1200);
 		driver.manage().window().setPosition(p);
 		driver.manage().window().setSize(d);
 	}

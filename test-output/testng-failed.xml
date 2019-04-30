@@ -3,18 +3,16 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Default suite]">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.xmkg.web.TestLoginPage">
+      <class name="com.xmkg.web.TestMysqlConnection">
         <methods>
+          <include name="contextLoads"/>
           <include name="springTestContextBeforeTestClass"/>
-          <include name="open"/>
-          <include name="close"/>
           <include name="springTestContextPrepareTestInstance"/>
           <include name="springTestContextAfterTestClass"/>
           <include name="springTestContextBeforeTestMethod"/>
-          <include name="test" invocation-numbers="2"/>
           <include name="springTestContextAfterTestMethod"/>
         </methods>
-      </class> <!-- com.xmkg.web.TestLoginPage -->
+      </class> <!-- com.xmkg.web.TestMysqlConnection -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
