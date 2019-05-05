@@ -1,4 +1,4 @@
-package com.xmkg.entity;
+package com.xmkg.entity.one;
 
 import java.util.Date;
 

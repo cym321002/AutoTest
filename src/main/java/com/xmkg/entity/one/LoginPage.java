@@ -1,4 +1,4 @@
-package com.xmkg.entity;
+package com.xmkg.entity.one;
 
 
 import org.openqa.selenium.WebElement;

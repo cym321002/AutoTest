@@ -5,8 +5,9 @@ import org.testng.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import com.xmkg.entity.LoginPage;
 import org.testng.annotations.*;
+
+import com.xmkg.entity.one.LoginPage;
 
 /**
  * 用例编号：

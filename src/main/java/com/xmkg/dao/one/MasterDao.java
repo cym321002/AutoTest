@@ -1,4 +1,4 @@
-package com.xmkg.dao;
+package com.xmkg.dao.one;
 
 import java.util.List;
 import java.util.Map;

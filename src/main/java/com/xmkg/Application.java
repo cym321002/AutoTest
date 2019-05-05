@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-
 @RestController//表示该类的所有方法返回json格式
 @SpringBootApplication(scanBasePackages = {"com.xmkg.*"})//等同余扫包 ，扫同级包，以及当前包
 public class Application {

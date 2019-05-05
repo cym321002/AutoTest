@@ -1,8 +1,7 @@
-package com.xmkg.dao;
+package com.xmkg.dao.two;
 
 import java.util.List;
 import java.util.Map;
-
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -11,12 +10,11 @@ import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
-import org.springframework.transaction.annotation.Transactional;
-
-public class MasterDaoImpl implements MasterDao{
+import org.springframework.stereotype.Repository;
+@Repository
+public class MapDaoClusterImpl implements MapClusterDao {
 	@Autowired
-	@Qualifier("entityManagerPrimary")
+	@Qualifier("entityManagerSecondary")
 	private EntityManager em;
 
 	@SuppressWarnings("deprecation")
@@ -28,16 +26,6 @@ public class MasterDaoImpl implements MasterDao{
 		@SuppressWarnings("unchecked")
 		List<Map<String,Object>> resultList=query.getResultList();
 		return resultList;
-	}
-	@Override
-	@Transactional
-	public int sqlUpdate (String sql) {
-		// TODO Auto-generated method stub
-		Query query = em.createNativeQuery(sql);
-		em.getTransaction().begin();
-		int i = query.executeUpdate();
-		em.getTransaction().commit();
-	    return i ;
 	}
 
 }
